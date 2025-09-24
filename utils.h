@@ -44,4 +44,31 @@ char* mi_strstr(const char* textoGrande, const char* textoChiquito);
  */
 int leerNumero(const char* str, int* posicion);
 
+// -------------------------------------------------------------------------
+//                          Algoritmos de Desencriptación
+// -------------------------------------------------------------------------
+
+/**
+ * @brief Desencripta un bloque de datos usando el algoritmo de rotación (ROT).
+ *
+ * Este algoritmo de rotación, desplaza cada carácter por una cantidad fija. La operación se realiza por bytes.
+ *
+ * @param buffer Puntero al bloque de datos a desencriptar.
+ * @param tamano El tamaño del bloque de datos en bytes.
+ * @param clave La clave de rotación (valor entero).
+ */
+void desencriptarROT(char* buffer, size_t tamano, int clave);
+
+/**
+ * @brief Desencripta un bloque de datos usando la operación XOR a nivel de bits.
+ *
+ * La operación XOR es su propio inverso, lo que significa que aplicar XOR
+ * dos veces con la misma clave devuelve el dato original.
+ *
+ * @param buffer Puntero al bloque de datos a desencriptar.
+ * @param tamano El tamaño del bloque de datos en bytes.
+ * @param clave La clave de encriptación (un carácter).
+ */
+void desencriptarXOR(char* buffer, size_t tamano, char clave);
+
 #endif // UTILS_H

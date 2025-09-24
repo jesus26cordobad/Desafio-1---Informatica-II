@@ -75,3 +75,23 @@ int leerNumero(const char* str, int* posicion) {
     *posicion = i;
     return numero;
 }
+
+// -------------------------------------------------------------------------
+//                          Implementación de Algoritmos de Desencriptación
+// -------------------------------------------------------------------------
+
+// Implementación de desencriptarROT
+void desencriptarROT(char* buffer, size_t tamano, int clave) {
+    for (size_t i = 0; i < tamano; ++i) {
+        //Para revertir la rotación, restamos la clave a cada byte.
+        buffer[i] -= clave;
+    }
+}
+
+// Implementación de desencriptarXOR
+void desencriptarXOR(char* buffer, size_t tamano, char clave) {
+    for (size_t i = 0; i < tamano; ++i) {
+        //La operación XOR (^) es su propio inverso.
+        buffer[i] = buffer[i] ^ clave;
+    }
+}
