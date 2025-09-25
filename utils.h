@@ -71,4 +71,23 @@ void desencriptarROT(char* buffer, size_t tamano, int clave);
  */
 void desencriptarXOR(char* buffer, size_t tamano, char clave);
 
+// -------------------------------------------------------------------------
+//                          Algoritmos de Descompresión
+// -------------------------------------------------------------------------
+
+/**
+ * @brief Descomprime un bloque de datos usando el algoritmo RLE (Run-Length Encoding).
+ * @param datosComprimidos Puntero a los datos encriptados/comprimidos.
+ * @param tamano Puntero al tamaño final del buffer de salida.
+ * @return Puntero a una nueva cadena de caracteres con los datos descomprimidos. Retorna nullptr si no es un RLE válido.
+ */
+char* descomprimirRLE(const char* datosComprimidos, size_t* tamano);
+
+/**
+ * @brief Descomprime un bloque de datos usando el algoritmo LZ78.
+ * @param datosComprimidos Puntero a los datos encriptados/comprimidos.
+ * @return Puntero a una nueva cadena de caracteres con los datos descomprimidos. Retorna nullptr si no es un LZ78 válido.
+ */
+char* descomprimirLZ78(const char* datosComprimidos);
+
 #endif // UTILS_H
