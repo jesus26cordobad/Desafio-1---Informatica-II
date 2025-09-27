@@ -94,16 +94,16 @@ int main() {
                 char* resultadoRLE = descomprimirRLE(copiaDatos, tamanoArchivo, &tamanoDescomprimido);
 
                 if (resultadoRLE != nullptr && mi_strstr(resultadoRLE, fragmentoConocido) != nullptr) {
-                    // ¡SOLUCION ENCONTRADA!
+                    // ¡SOLUCION RLE ENCONTRADA!
                     solucionEncontrada = true;
-                    std::cout << "\n--------------------------------------------------------" << std::endl;
-                    std::cout << "        ¡SOLUCION ENCONTRADA!" << std::endl;
-                    std::cout << "--------------------------------------------------------" << std::endl;
+                    //std::cout << "\n--------------------------------------------------------" << std::endl;
+                    //std::cout << "        ¡SOLUCION ENCONTRADA!" << std::endl;
+                    //std::cout << "--------------------------------------------------------" << std::endl;
                     std::cout << "Mensaje Original Reconstruido:" << std::endl;
                     std::cout << resultadoRLE << std::endl;
                     std::cout << "\nMetodo de Compresion: RLE" << std::endl;
-                    std::cout << "Clave de Rotacion (n): " << n << std::endl;
-                    std::cout << "Clave XOR (K): " << (int)k << " (0x" << std::hex << (int)k << std::dec << ")" << std::endl;
+                    std::cout << "Rotacion: " << n << std::endl;
+                    std::cout << "Key: " << (int)k << " (0x" << std::hex << (int)k << std::dec << ")" << std::endl;
 
                     delete[] resultadoRLE;
                     delete[] copiaDatos;
@@ -116,15 +116,42 @@ int main() {
                 if (resultadoRLE != nullptr) {
                     delete[] resultadoRLE;
                 }
-                // Liberamos la copia de datos de esta iteración.
+
+                // --- INTENTAR LZ78 ---
+                //Si RLE falló, probamos LZ78.
+                char* resultadoLZ78 = descomprimirLZ78(copiaDatos, tamanoArchivo);
+
+                if (resultadoLZ78 != nullptr && mi_strstr(resultadoLZ78, fragmentoConocido) != nullptr) {
+                    // ¡SOLUCIÓN LZ78 ENCONTRADA!
+                    solucionEncontrada = true;
+                    //std::cout << "\n--------------------------------------------------------" << std::endl;
+                    //std::cout << "        ¡SOLUCION ENCONTRADA!" << std::endl;
+                    //std::cout << "--------------------------------------------------------" << std::endl;
+                    std::cout << "Mensaje Original Reconstruido:" << std::endl;
+                    std::cout << resultadoLZ78 << std::endl;
+                    std::cout << "\nMetodo de Compresion: LZ78" << std::endl;
+                    std::cout << "Rotacion: " << n << std::endl;
+                    std::cout << "Key: " << (int)k << " (0x" << std::hex << (int)k << std::dec << ")" << std::endl;
+
+                    delete[] resultadoLZ78;
+                    delete[] copiaDatos;
+                    break;
+                }
+
+                //Limpieza después del intento LZ78 (si falló)
+                if (resultadoLZ78 != nullptr) {
+                    delete[] resultadoLZ78;
+                }
+
+                //Limpieza de memoria para la iteración fallida
                 delete[] copiaDatos;
             }
         }
 
         if (!solucionEncontrada) {
             std::cout << "\n--------------------------------------------------------" << std::endl;
-            std::cout << "El programa no encontro la solucion con RLE para el caso #" << caso << "." << std::endl;
-            std::cout << "Conclusion: El metodo de compresion debe ser LZ78." << std::endl;
+            std::cout << "El programa no encontro la solucion con RLE ni LZ78 para el caso #" << caso << "." << std::endl;
+            std::cout << "Conclusion: El fragmento conocido no se encontro con ningun metodo/parametro." << std::endl;
             std::cout << "--------------------------------------------------------" << std::endl;
         }
 

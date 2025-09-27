@@ -83,7 +83,7 @@ void desencriptarXOR(char* buffer, size_t tamano, char clave);
  * El RLE se modela como [Basura, repeticiones (1 byte entero), caracter].
  *
  * @param datosComprimidos Puntero a los datos encriptados/comprimidos.
- * @param tamanoArchivo Puntero al tamaño final del buffer de salida.
+ * @param tamanoArchivo El tamaño final del buffer de entrada.
  * @param tamanoFinal Puntero al tamaño final del buffer de salida.
  * @return Puntero a una nueva cadena de caracteres con los datos descomprimidos. Retorna nullptr si no es un RLE válido.
  */
@@ -92,8 +92,9 @@ char* descomprimirRLE(const char* datosComprimidos, size_t tamanoArchivo, size_t
 /**
  * @brief Descomprime un bloque de datos usando el algoritmo LZ78.
  * @param datosComprimidos Puntero a los datos encriptados/comprimidos.
+ * @param tamanoArchivo El tamaño total del buffer de entrada.
  * @return Puntero a una nueva cadena de caracteres con los datos descomprimidos. Retorna nullptr si no es un LZ78 válido.
  */
-char* descomprimirLZ78(const char* datosComprimidos);
+char* descomprimirLZ78(const char* datosComprimidos, size_t tamanoArchivo);
 
 #endif // UTILS_H
