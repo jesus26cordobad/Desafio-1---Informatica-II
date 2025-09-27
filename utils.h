@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <cstddef>
+#include <stdint.h>
 
 //Funciones para manejar cadenas de texto estilo C (char*) sin usar la STL.
 
@@ -49,13 +50,14 @@ int leerNumero(const char* str, int* posicion);
 // -------------------------------------------------------------------------
 
 /**
- * @brief Desencripta un bloque de datos usando el algoritmo de rotación (ROT).
+ * @brief Desencripta un bloque de datos aplicando la operacion de Rotación de Bits Cíclica Inversa.
  *
- * Este algoritmo de rotación, desplaza cada carácter por una cantidad fija. La operación se realiza por bytes.
+ * La encriptacion fue Rotacion Izquierda n, por lo que la desencriptacion es una
+ * Rotacion Derecha (n) a nivel de bits (operadores >> y <<).
  *
  * @param buffer Puntero al bloque de datos a desencriptar.
  * @param tamano El tamaño del bloque de datos en bytes.
- * @param clave La clave de rotación (valor entero).
+ * @param clave La clave de rotación (valor entero, n).
  */
 void desencriptarROT(char* buffer, size_t tamano, int clave);
 
@@ -77,11 +79,15 @@ void desencriptarXOR(char* buffer, size_t tamano, char clave);
 
 /**
  * @brief Descomprime un bloque de datos usando el algoritmo RLE (Run-Length Encoding).
+ *
+ * El RLE se modela como [Basura, repeticiones (1 byte entero), caracter].
+ *
  * @param datosComprimidos Puntero a los datos encriptados/comprimidos.
- * @param tamano Puntero al tamaño final del buffer de salida.
+ * @param tamanoArchivo Puntero al tamaño final del buffer de salida.
+ * @param tamanoFinal Puntero al tamaño final del buffer de salida.
  * @return Puntero a una nueva cadena de caracteres con los datos descomprimidos. Retorna nullptr si no es un RLE válido.
  */
-char* descomprimirRLE(const char* datosComprimidos, size_t* tamano);
+char* descomprimirRLE(const char* datosComprimidos, size_t tamanoArchivo, size_t* tamanoFinal);
 
 /**
  * @brief Descomprime un bloque de datos usando el algoritmo LZ78.

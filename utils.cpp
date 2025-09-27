@@ -1,4 +1,5 @@
-#include "Utils.h"
+#include "utils.h"
+#include <iostream>
 
 //Implementación de mi_strlen
 size_t mi_strlen(const char* str) {
@@ -81,10 +82,13 @@ int leerNumero(const char* str, int* posicion) {
 // -------------------------------------------------------------------------
 
 // Implementación de desencriptarROT
-void desencriptarROT(char* buffer, size_t tamano, int clave) {
+void desencriptarROT(char* buffer, size_t tamano, int n) {
+    //n es la clave de rotación
     for (size_t i = 0; i < tamano; ++i) {
-        //Para revertir la rotación, restamos la clave a cada byte.
-        buffer[i] -= clave;
+        unsigned char byte = (unsigned char)buffer[i];
+        // (byte >> n)  ->  Mueve n bits a la derecha (los n bits más bajos se pierden).
+        // (byte << (8 - n)) -> Los n bits que se perdieron, se traen de vuelta al inicio.
+        buffer[i] = (char)((byte >> n) | (byte << (8 - n)));
     }
 }
 
@@ -100,36 +104,41 @@ void desencriptarXOR(char* buffer, size_t tamano, char clave) {
 //                          Implementación de Descompresión
 // -------------------------------------------------------------------------
 
-char* descomprimirRLE(const char* datosComprimidos, size_t* tamano) {
-    size_t tamanoOriginal = mi_strlen(datosComprimidos);
-    size_t capacidadMaxima = tamanoOriginal + 10;
+char* descomprimirRLE(const char* datosComprimidos, size_t tamanoArchivo ,size_t* tamanoFinal) {
+    //Si el archivo no es divisibe por 3, el formato es inválido.
+    if (tamanoArchivo % 3 != 0 || tamanoArchivo == 0){
+        return nullptr;
+    }
+    //Se estima un tamaño de salida razonable
+    size_t capacidadMaxima = tamanoArchivo * 2;
     char* resultado = new char[capacidadMaxima];
-    size_t posComprimido = 0;
     size_t posResultado = 0;
 
-    while (posComprimido < tamanoOriginal) {
-        if (datosComprimidos[posComprimido] < '0' || datosComprimidos[posComprimido] > '9') {
-            delete[] resultado;
-            return nullptr;
-        }
+    //Se recorre el archivo de 3 en 3 bytes.
+    for (size_t i = 0; i < tamanoArchivo; i += 3) {
 
-        int repeticiones = leerNumero(datosComprimidos, (int*)&posComprimido);
-        char caracter = datosComprimidos[posComprimido];
-        posComprimido++;
+        //Byte 2: longitud de repetición, se lee como un entero sin signo (0-255)
+        unsigned char repeticiones = (unsigned char)datosComprimidos[i + 1];
 
-        for (int i = 0; i < repeticiones; ++i) {
+        //Byte 3: carácter a repetir.
+        char caracter = datosComprimidos[i + 2];
+
+        //Se repite el carácter la cantidad de veces indicada.
+        for (unsigned char j = 0; j < repeticiones; ++j) {
+            //redimensionamiento de memoria dinámica
             if (posResultado >= capacidadMaxima - 1) {
                 capacidadMaxima *= 2;
                 char* nuevoResultado = new char[capacidadMaxima];
-                mi_strcpy_seguro(nuevoResultado, resultado, mi_strlen(resultado) + 1);
+                mi_strcpy_seguro(nuevoResultado, resultado, posResultado + 1);
                 delete[] resultado;
                 resultado = nuevoResultado;
             }
             resultado[posResultado++] = caracter;
         }
     }
+
     resultado[posResultado] = '\0';
-    *tamano = posResultado;
+    *tamanoFinal = posResultado;
     return resultado;
 }
 
