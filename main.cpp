@@ -96,9 +96,7 @@ int main() {
                 if (resultadoRLE != nullptr && mi_strstr(resultadoRLE, fragmentoConocido) != nullptr) {
                     // ¡SOLUCION RLE ENCONTRADA!
                     solucionEncontrada = true;
-                    //std::cout << "\n--------------------------------------------------------" << std::endl;
-                    //std::cout << "        ¡SOLUCION ENCONTRADA!" << std::endl;
-                    //std::cout << "--------------------------------------------------------" << std::endl;
+
                     std::cout << "Mensaje Original Reconstruido:" << std::endl;
                     std::cout << resultadoRLE << std::endl;
                     std::cout << "\nMetodo de Compresion: RLE" << std::endl;
@@ -124,9 +122,7 @@ int main() {
                 if (resultadoLZ78 != nullptr && mi_strstr(resultadoLZ78, fragmentoConocido) != nullptr) {
                     // ¡SOLUCIÓN LZ78 ENCONTRADA!
                     solucionEncontrada = true;
-                    //std::cout << "\n--------------------------------------------------------" << std::endl;
-                    //std::cout << "        ¡SOLUCION ENCONTRADA!" << std::endl;
-                    //std::cout << "--------------------------------------------------------" << std::endl;
+
                     std::cout << "Mensaje Original Reconstruido:" << std::endl;
                     std::cout << resultadoLZ78 << std::endl;
                     std::cout << "\nMetodo de Compresion: LZ78" << std::endl;
